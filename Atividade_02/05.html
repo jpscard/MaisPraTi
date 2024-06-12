@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo Pedra, Papel, Tesoura</title>
+  <style>
+    /* Estilização do corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif; /* Fonte da página */
+      background-color: #f4f7f9; /* Cor de fundo */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Altura total da janela de visualização */
+    }
+    /* Estilização do container */
+    .container {
+      background-color: #fff; /* Fundo branco */
+      padding: 30px; /* Espaçamento interno */
+      border-radius: 10px; /* Bordas arredondadas */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      max-width: 400px; /* Largura máxima */
+      width: 100%; /* Largura total */
+      text-align: center; /* Texto centralizado */
+    }
+    /* Estilização do título */
+    h1 {
+      font-size: 24px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+      margin-bottom: 20px; /* Margem inferior */
+    }
+    /* Estilização dos rótulos */
+    label {
+      display: block; /* Exibição em bloco */
+      font-size: 14px; /* Tamanho da fonte */
+      color: #555; /* Cor do texto */
+      margin-bottom: 5px; /* Margem inferior */
+      text-align: left; /* Alinhamento à esquerda */
+    }
+    /* Estilização dos campos de seleção */
+    select {
+      width: calc(100% - 20px); /* Largura calculada */
+      padding: 10px; /* Espaçamento interno */
+      margin-bottom: 20px; /* Margem inferior */
+      border: 1px solid #ccc; /* Borda */
+      border-radius: 5px; /* Bordas arredondadas */
+      box-sizing: border-box; /* Inclui borda e padding no cálculo da largura */
+    }
+    /* Estilização do botão */
+    button {
+      width: 100%; /* Largura total */
+      padding: 12px; /* Espaçamento interno */
+      background-color: #007BFF; /* Cor de fundo */
+      color: #fff; /* Cor do texto */
+      border: none; /* Sem borda */
+      border-radius: 5px; /* Bordas arredondadas */
+      font-size: 16px; /* Tamanho da fonte */
+      cursor: pointer; /* Cursor de ponteiro */
+      transition: background-color 0.3s ease; /* Transição suave */
+    }
+    /* Estilização do botão ao passar o mouse */
+    button:hover {
+      background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+    }
+    /* Estilização do resultado */
+    .result {
+      margin-top: 20px; /* Margem superior */
+      font-size: 18px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Jogo Pedra, Papel, Tesoura</h1>
+    <form id="jogoForm">
+      <label for="escolhaUsuario">Escolha sua jogada:</label>
+      <select id="escolhaUsuario" name="escolhaUsuario" required>
+        <option value="pedra">Pedra</option>
+        <option value="papel">Papel</option>
+        <option value="tesoura">Tesoura</option>
+      </select>
+      <button type="submit">Jogar</button>
+    </form>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    // Adiciona um evento de submissão ao formulário
+    document.getElementById('jogoForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Previne o comportamento padrão do formulário
+      
+      // Obtém a escolha do usuário
+      let escolhaUsuario = document.getElementById('escolhaUsuario').value;
+      
+      // Define as escolhas possíveis para o computador
+      let escolhasComputador = ["pedra", "papel", "tesoura"];
+      // Seleciona uma escolha aleatória para o computador
+      let escolhaComputador = escolhasComputador[Math.floor(Math.random() * 3)];
+      
+      // Variável para armazenar o resultado do jogo
+      let resultadoJogo;
+      
+      // Determina o resultado do jogo
+      if (escolhaUsuario === escolhaComputador) {
+        resultadoJogo = "Empate!";
+      } else if (
+        (escolhaUsuario === "pedra" && escolhaComputador === "tesoura") ||
+        (escolhaUsuario === "papel" && escolhaComputador === "pedra") ||
+        (escolhaUsuario === "tesoura" && escolhaComputador === "papel")
+      ) {
+        resultadoJogo = "Você ganhou!";
+      } else {
+        resultadoJogo = "Você perdeu!";
+      }
+      
+      // Exibe o resultado
+      document.getElementById('result').textContent = "Você escolheu: " + escolhaUsuario + ". Computador escolheu: " + escolhaComputador + ". " + resultadoJogo;
+    });
+  </script>
+</body>
+</html>
