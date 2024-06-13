@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combinar Inventários</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    textarea, button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      text-align: left;
+      background-color: #eaeaea;
+      padding: 15px;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Combinar Inventários</h1>
+    <textarea id="inputInventarioA" rows="4" placeholder='Digite o inventário da Loja A em formato JSON...'></textarea>
+    <textarea id="inputInventarioB" rows="4" placeholder='Digite o inventário da Loja B em formato JSON...'></textarea>
+    <button onclick="preencherDados()">Preencher Dados</button>
+    <button onclick="combinarInventarios()">Combinar Inventários</button>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    // Função para preencher automaticamente os campos de entrada com dados de exemplo
+    function preencherDados() {
+      const exemploInventarioA = {
+        "maçã": 10,
+        "banana": 5,
+        "laranja": 8
+      };
+      const exemploInventarioB = {
+        "banana": 7,
+        "laranja": 10,
+        "uva": 4
+      };
+      document.getElementById('inputInventarioA').value = JSON.stringify(exemploInventarioA, null, 2);
+      document.getElementById('inputInventarioB').value = JSON.stringify(exemploInventarioB, null, 2);
+    }
+
+    // Função para combinar inventários
+    function combinarInventarios() {
+      let inventarioA, inventarioB;
+      try {
+        inventarioA = JSON.parse(document.getElementById('inputInventarioA').value);
+        inventarioB = JSON.parse(document.getElementById('inputInventarioB').value);
+      } catch (e) {
+        alert('Por favor, insira inventários válidos em formato JSON.');
+        return;
+      }
+
+      const inventarioCombinado = { ...inventarioA };
+
+      for (const item in inventarioB) {
+        if (inventarioCombinado[item]) {
+          inventarioCombinado[item] += inventarioB[item];
+        } else {
+          inventarioCombinado[item] = inventarioB[item];
+        }
+      }
+
+      exibirResultado(inventarioCombinado);
+    }
+
+    // Função para exibir o resultado no elemento <pre>
+    function exibirResultado(resultado) {
+      document.getElementById('output').textContent = JSON.stringify(resultado, null, 2);
+    }
+  </script>
+</body>
+</html>

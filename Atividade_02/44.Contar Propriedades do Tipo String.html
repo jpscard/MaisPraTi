@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contar Propriedades do Tipo String</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    textarea, button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      text-align: left;
+      background-color: #eaeaea;
+      padding: 15px;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contar Propriedades do Tipo String</h1>
+    <textarea id="inputObjeto" rows="4" placeholder='Digite um objeto em formato JSON...'></textarea>
+    <button onclick="preencherDados()">Preencher Dados</button>
+    <button onclick="contarStrings()">Contar Strings</button>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    // Função para preencher automaticamente o campo de entrada com um objeto de exemplo
+    function preencherDados() {
+      const exemplo = {
+        nome: "João",
+        idade: 25,
+        profissao: "Desenvolvedor",
+        endereco: "Rua A, 123",
+        email: "joao@example.com",
+        telefone: "1234-5678",
+        ativo: true,
+        pontuacao: [10, 20, 30]
+      };
+      document.getElementById('inputObjeto').value = JSON.stringify(exemplo, null, 2);
+    }
+
+    // Função para contar propriedades do tipo string em um objeto
+    function contarStrings() {
+      let objeto;
+      try {
+        objeto = JSON.parse(document.getElementById('inputObjeto').value);
+      } catch (e) {
+        alert('Por favor, insira um objeto válido em formato JSON.');
+        return;
+      }
+
+      let count = 0;
+      for (const prop in objeto) {
+        if (typeof objeto[prop] === 'string') {
+          count++;
+        }
+      }
+
+      exibirResultado({ totalStrings: count });
+    }
+
+    // Função para exibir o resultado no elemento <pre>
+    function exibirResultado(resultado) {
+      document.getElementById('output').textContent = JSON.stringify(resultado, null, 2);
+    }
+  </script>
+</body>
+</html>

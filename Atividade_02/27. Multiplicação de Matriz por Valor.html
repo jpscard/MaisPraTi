@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiplicação de Matriz por Valor</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: auto;
+      overflow-y: auto;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 800px;
+      width: 100%;
+    }
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    td {
+      border: 1px solid #ccc;
+      padding: 5px;
+      width: 50px;
+      height: 30px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .input-group {
+      margin-bottom: 20px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Multiplicação de Matriz por Valor</h1>
+    <h2>Matriz M (6x6)</h2>
+    <table id="matrizM"></table>
+    <button id="preencherMatriz">Preencher Matriz com Valores Aleatórios</button>
+    <div class="input-group">
+      <label for="valorA">Valor A:</label>
+      <input type="number" id="valorA" step="any">
+    </div>
+    <button id="calcularVetor">Calcular Vetor V</button>
+    <div class="result" id="vetorV"></div>
+  </div>
+
+  <script>
+    const linhas = 6;
+    const colunas = 6;
+
+    // Criar tabela para a matriz M
+    const tabela = document.getElementById('matrizM');
+    for (let i = 0; i < linhas; i++) {
+      const linha = document.createElement('tr');
+      for (let j = 0; j < colunas; j++) {
+        const celula = document.createElement('td');
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.step = '0.01';
+        input.id = `matrizM-cell-${i}-${j}`;
+        celula.appendChild(input);
+        linha.appendChild(celula);
+      }
+      tabela.appendChild(linha);
+    }
+
+    // Evento para preencher a matriz com valores aleatórios
+    document.getElementById('preencherMatriz').addEventListener('click', function() {
+      for (let i = 0; i < linhas; i++) {
+        for (let j = 0; j < colunas; j++) {
+          document.getElementById(`matrizM-cell-${i}-${j}`).value = (Math.random() * 20 - 10).toFixed(2); // Valores entre -10 e 10
+        }
+      }
+    });
+
+    // Evento para calcular o vetor V
+    document.getElementById('calcularVetor').addEventListener('click', function() {
+      const valorA = parseFloat(document.getElementById('valorA').value);
+      if (isNaN(valorA)) {
+        alert('Por favor, insira um valor válido para A.');
+        return;
+      }
+
+      const vetorV = [];
+      for (let i = 0; i < linhas; i++) {
+        for (let j = 0; j < colunas; j++) {
+          const valorM = parseFloat(document.getElementById(`matrizM-cell-${i}-${j}`).value);
+          if (isNaN(valorM)) {
+            alert('Por favor, insira valores válidos na matriz M.');
+            return;
+          }
+          vetorV.push(valorM * valorA);
+        }
+      }
+
+      // Exibição do vetor V
+      const resultDiv = document.getElementById('vetorV');
+      resultDiv.innerHTML = '<h2>Vetor V (Matriz M multiplicada por A)</h2>';
+      resultDiv.innerHTML += vetorV.map((valor, index) => `<p>V[${index + 1}]: ${valor.toFixed(2)}</p>`).join('');
+    });
+  </script>
+</body>
+</html>

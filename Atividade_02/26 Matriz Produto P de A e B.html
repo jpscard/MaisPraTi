@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produto de Matrizes A e B</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 1200px;
+      width: 100%;
+    }
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    td {
+      border: 1px solid #ccc;
+      padding: 5px;
+      width: 60px;
+      height: 40px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: center;
+    }
+    .result table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    .result td {
+      border: 1px solid #ccc;
+      padding: 5px;
+      width: 60px;
+      height: 40px;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Matriz Produto P de A e B</h1>
+    <h2>Matriz A</h2>
+    <table id="matrizA"></table>
+    <h2>Matriz B</h2>
+    <table id="matrizB"></table>
+    <button id="preencherMatrizes">Preencher Matrizes</button>
+    <button id="calcularProduto">Calcular Matriz Produto P</button>
+    <h2>Matriz Produto P</h2>
+    <table id="matrizP"></table>
+    <div class="result" id="resultado"></div>
+  </div>
+
+  <script>
+    const linhas = 3;
+    const colunas = 5;
+
+    // Função para criar uma tabela HTML para uma matriz
+    function criarTabela(matrizId) {
+      const tabela = document.getElementById(matrizId);
+      tabela.innerHTML = '';  // Limpa a tabela antes de recriar
+      for (let i = 0; i < linhas; i++) {
+        const linha = document.createElement('tr');
+        for (let j = 0; j < colunas; j++) {
+          const celula = document.createElement('td');
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.step = '0.01';
+          input.id = `${matrizId}-cell-${i}-${j}`;
+          celula.appendChild(input);
+          linha.appendChild(celula);
+        }
+        tabela.appendChild(linha);
+      }
+    }
+
+    // Criar tabelas para as matrizes A, B e P
+    criarTabela('matrizA');
+    criarTabela('matrizB');
+    criarTabela('matrizP');
+
+    // Função para preencher as matrizes A e B com valores aleatórios
+    document.getElementById('preencherMatrizes').addEventListener('click', function() {
+      for (let i = 0; i < linhas; i++) {
+        for (let j = 0; j < colunas; j++) {
+          document.getElementById(`matrizA-cell-${i}-${j}`).value = (Math.random() * 20 - 10).toFixed(2); // valores entre -10 e 10
+          document.getElementById(`matrizB-cell-${i}-${j}`).value = (Math.random() * 20 - 10).toFixed(2); // valores entre -10 e 10
+        }
+      }
+    });
+
+    // Função para calcular a matriz produto P
+    document.getElementById('calcularProduto').addEventListener('click', function() {
+      for (let i = 0; i < linhas; i++) {
+        for (let j = 0; j < colunas; j++) {
+          const valorA = parseFloat(document.getElementById(`matrizA-cell-${i}-${j}`).value);
+          const valorB = parseFloat(document.getElementById(`matrizB-cell-${i}-${j}`).value);
+          if (isNaN(valorA) || isNaN(valorB)) {
+            alert(`Por favor, insira valores válidos nas matrizes A e B.`);
+            return;
+          }
+          const valorP = valorA * valorB;
+          document.getElementById(`matrizP-cell-${i}-${j}`).value = valorP.toFixed(2);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

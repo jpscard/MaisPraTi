@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folha de Pagamentos</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .input-group label {
+      width: 20%;
+      text-align: right;
+      padding-right: 10px;
+      line-height: 30px;
+    }
+    .input-group input {
+      width: 75%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result, .consulta-result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+    .employee {
+      background-color: #f4f7f9;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Folha de Pagamentos</h1>
+    <div class="input-group">
+      <label for="quantidadeFuncionarios">Quantidade de Funcionários:</label>
+      <input type="number" id="quantidadeFuncionarios" min="1" max="80">
+    </div>
+    <button id="gerarCampos">Gerar Campos</button>
+    <div id="inputsContainer"></div>
+    <button id="preencherDados" style="display: none;">Preencher Dados</button>
+    <button id="processarFolha" style="display: none;">Processar Folha de Pagamento</button>
+    <div class="input-group" id="consultaContainer" style="display: none;">
+      <label for="consultaMatricula">Consultar Matrícula:</label>
+      <input type="text" id="consultaMatricula">
+      <button id="consultarFuncionario">Consultar</button>
+    </div>
+    <div class="consulta-result" id="consultaResult"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('gerarCampos').addEventListener('click', function() {
+      const quantidadeFuncionarios = parseInt(document.getElementById('quantidadeFuncionarios').value);
+      const container = document.getElementById('inputsContainer');
+      container.innerHTML = ''; // Limpar campos anteriores
+
+      if (isNaN(quantidadeFuncionarios) || quantidadeFuncionarios < 1 || quantidadeFuncionarios > 80) {
+        alert('Por favor, insira um número válido de funcionários (1-80).');
+        return;
+      }
+
+      for (let i = 0; i < quantidadeFuncionarios; i++) {
+        const inputGroup = document.createElement('div');
+        inputGroup.className = 'input-group';
+
+        const labelMatricula = document.createElement('label');
+        labelMatricula.textContent = `Matrícula ${i + 1}:`;
+        inputGroup.appendChild(labelMatricula);
+
+        const matriculaInput = document.createElement('input');
+        matriculaInput.type = 'text';
+        matriculaInput.id = `matricula${i}`;
+        inputGroup.appendChild(matriculaInput);
+
+        const labelNome = document.createElement('label');
+        labelNome.textContent = `Nome ${i + 1}:`;
+        inputGroup.appendChild(labelNome);
+
+        const nomeInput = document.createElement('input');
+        nomeInput.type = 'text';
+        nomeInput.id = `nome${i}`;
+        inputGroup.appendChild(nomeInput);
+
+        const labelSalario = document.createElement('label');
+        labelSalario.textContent = `Salário ${i + 1}:`;
+        inputGroup.appendChild(labelSalario);
+
+        const salarioInput = document.createElement('input');
+        salarioInput.type = 'number';
+        salarioInput.step = '0.01';
+        salarioInput.id = `salario${i}`;
+        inputGroup.appendChild(salarioInput);
+
+        container.appendChild(inputGroup);
+      }
+
+      document.getElementById('preencherDados').style.display = 'block';
+      document.getElementById('processarFolha').style.display = 'block';
+      document.getElementById('consultaContainer').style.display = 'flex';
+    });
+
+    document.getElementById('preencherDados').addEventListener('click', function() {
+      const quantidadeFuncionarios = parseInt(document.getElementById('quantidadeFuncionarios').value);
+      const nomes = ["Alice", "Bruno", "Carla", "Diego", "Eva", "Felipe", "Gabi", "Hugo", "Isabela"];
+      const salarios = [3000.50, 4000.75, 2500.00, 4500.25, 3200.00, 5000.00, 2800.40, 3500.60, 3800.80];
+
+      for (let i = 0; i < quantidadeFuncionarios; i++) {
+        document.getElementById(`matricula${i}`).value = `MAT${i + 1}`;
+        document.getElementById(`nome${i}`).value = nomes[i % nomes.length];
+        document.getElementById(`salario${i}`).value = salarios[i % salarios.length].toFixed(2);
+      }
+    });
+
+    const funcionarios = [];
+
+    document.getElementById('processarFolha').addEventListener('click', function() {
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = '';
+      const quantidadeFuncionarios = parseInt(document.getElementById('quantidadeFuncionarios').value);
+
+      funcionarios.length = 0; // Limpar lista de funcionários antes de preencher novamente
+
+      for (let i = 0; i < quantidadeFuncionarios; i++) {
+        const matricula = document.getElementById(`matricula${i}`).value;
+        const nome = document.getElementById(`nome${i}`).value;
+        const salarioBruto = parseFloat(document.getElementById(`salario${i}`).value);
+
+        if (matricula.trim() === '' || nome.trim() === '' || isNaN(salarioBruto)) {
+          alert(`Por favor, preencha todos os campos corretamente para o funcionário ${i + 1}.`);
+          return;
+        }
+
+        const deducaoINSS = salarioBruto * 0.12;
+        const salarioLiquido = salarioBruto - deducaoINSS;
+
+        const funcionario = {
+          matricula,
+          nome,
+          salarioBruto,
+          deducaoINSS,
+          salarioLiquido
+        };
+
+        funcionarios.push(funcionario);
+
+        resultDiv.innerHTML += `
+          <div class="employee">
+            <p><strong>Matrícula:</strong> ${matricula}</p>
+            <p><strong>Nome:</strong> ${nome}</p>
+            <p><strong>Salário Bruto:</strong> R$ ${salarioBruto.toFixed(2)}</p>
+            <p><strong>Dedução INSS:</strong> R$ ${deducaoINSS.toFixed(2)}</p>
+            <p><strong>Salário Líquido:</strong> R$ ${salarioLiquido.toFixed(2)}</p>
+          </div>
+        `;
+      }
+    });
+
+    document.getElementById('consultarFuncionario').addEventListener('click', function() {
+      const matricula = document.getElementById('consultaMatricula').value;
+      const consultaResultDiv = document.getElementById('consultaResult');
+      consultaResultDiv.innerHTML = '';
+
+      const funcionario = funcionarios.find(f => f.matricula === matricula);
+
+      if (funcionario) {
+        consultaResultDiv.innerHTML = `
+          <div class="employee">
+            <h2>Consulta de Funcionário</h2>
+            <p><strong>Matrícula:</strong> ${funcionario.matricula}</p>
+            <p><strong>Nome:</strong> ${funcionario.nome}</p>
+            <p><strong>Salário Bruto:</strong> R$ ${funcionario.salarioBruto.toFixed(2)}</p>
+            <p><strong>Dedução INSS:</strong> R$ ${funcionario.deducaoINSS.toFixed(2)}</p>
+            <p><strong>Salário Líquido:</strong> R$ ${funcionario.salarioLiquido.toFixed(2)}</p>
+          </div>
+        `;
+      } else {
+        consultaResultDiv.textContent = 'Funcionário não encontrado.';
+      }
+    });
+  </script>
+</body>
+</html>

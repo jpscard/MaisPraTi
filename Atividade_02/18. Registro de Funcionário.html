@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Funcionário</title>
+  <style>
+    /* Estilização do corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif; /* Fonte da página */
+      background-color: #f4f7f9; /* Cor de fundo */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Altura total da janela de visualização */
+    }
+    /* Estilização do container */
+    .container {
+      background-color: #fff; /* Fundo branco */
+      padding: 30px; /* Espaçamento interno */
+      border-radius: 10px; /* Bordas arredondadas */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      max-width: 400px; /* Largura máxima */
+      width: 100%; /* Largura total */
+      text-align: center; /* Texto centralizado */
+    }
+    /* Estilização do título */
+    h1 {
+      font-size: 24px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+      margin-bottom: 20px; /* Margem inferior */
+    }
+    /* Estilização dos campos de entrada */
+    input {
+      width: calc(100% - 20px); /* Largura total menos o padding */
+      padding: 10px; /* Espaçamento interno */
+      margin-bottom: 10px; /* Margem inferior */
+      border: 1px solid #ccc; /* Borda */
+      border-radius: 5px; /* Bordas arredondadas */
+      font-size: 16px; /* Tamanho da fonte */
+    }
+    /* Estilização do botão */
+    button {
+      width: 100%; /* Largura total */
+      padding: 12px; /* Espaçamento interno */
+      background-color: #007BFF; /* Cor de fundo */
+      color: #fff; /* Cor do texto */
+      border: none; /* Sem borda */
+      border-radius: 5px; /* Bordas arredondadas */
+      font-size: 16px; /* Tamanho da fonte */
+      cursor: pointer; /* Cursor de ponteiro */
+      transition: background-color 0.3s ease; /* Transição suave */
+      margin-bottom: 10px; /* Margem inferior */
+    }
+    /* Estilização do botão ao passar o mouse */
+    button:hover {
+      background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+    }
+    /* Estilização do resultado */
+    .result {
+      margin-top: 20px; /* Margem superior */
+      font-size: 18px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+      text-align: left; /* Alinhamento à esquerda */
+    }
+    .result p {
+      margin: 5px 0; /* Margem dos parágrafos */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Registro de Funcionário</h1>
+    <input type="text" id="nome" placeholder="Nome do Funcionário">
+    <input type="text" id="cargo" placeholder="Cargo do Funcionário">
+    <input type="number" id="salario" placeholder="Salário do Funcionário">
+    <button id="registrarFuncionario">Registrar Funcionário</button>
+    <button id="mostrarRegistros">Mostrar Registros</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    // Array para armazenar registros de funcionários
+    let registros = [];
+
+    // Adiciona um evento de clique ao botão "Registrar Funcionário"
+    document.getElementById('registrarFuncionario').addEventListener('click', function() {
+      const nome = document.getElementById('nome').value;
+      const cargo = document.getElementById('cargo').value;
+      const salario = parseFloat(document.getElementById('salario').value);
+
+      if (nome.trim() === '' || cargo.trim() === '' || isNaN(salario)) {
+        alert('Por favor, preencha todos os campos corretamente.');
+        return;
+      }
+
+      // Cria o registro do funcionário
+      const funcionario = {
+        nome: nome,
+        cargo: cargo,
+        salario: salario
+      };
+
+      // Adiciona o registro ao array de registros
+      registros.push(funcionario);
+
+      // Limpa os campos de entrada
+      document.getElementById('nome').value = '';
+      document.getElementById('cargo').value = '';
+      document.getElementById('salario').value = '';
+
+      alert('Funcionário registrado com sucesso!');
+    });
+
+    // Adiciona um evento de clique ao botão "Mostrar Registros"
+    document.getElementById('mostrarRegistros').addEventListener('click', function() {
+      const resultDiv = document.getElementById('result');
+
+      if (registros.length > 0) {
+        resultDiv.innerHTML = '<h2>Registros dos Funcionários</h2>' + registros.map(funcionario => `
+          <div>
+            <p><strong>Nome:</strong> ${funcionario.nome}</p>
+            <p><strong>Cargo:</strong> ${funcionario.cargo}</p>
+            <p><strong>Salário:</strong> R$ ${funcionario.salario.toFixed(2)}</p>
+          </div>
+        `).join('');
+      } else {
+        resultDiv.innerHTML = '<p>Não há registros de funcionários.</p>';
+      }
+    });
+  </script>
+</body>
+</html>

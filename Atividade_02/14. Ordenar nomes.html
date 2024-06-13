@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leitor de Nomes</title>
+  <style>
+    /* Estilização do corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif; /* Fonte da página */
+      background-color: #f4f7f9; /* Cor de fundo */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Altura total da janela de visualização */
+    }
+    /* Estilização do container */
+    .container {
+      background-color: #fff; /* Fundo branco */
+      padding: 30px; /* Espaçamento interno */
+      border-radius: 10px; /* Bordas arredondadas */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      max-width: 400px; /* Largura máxima */
+      width: 100%; /* Largura total */
+      text-align: center; /* Texto centralizado */
+    }
+    /* Estilização do título */
+    h1 {
+      font-size: 24px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+      margin-bottom: 20px; /* Margem inferior */
+    }
+    /* Estilização dos campos de entrada */
+    input {
+      width: calc(100% - 20px); /* Largura total menos o padding */
+      padding: 10px; /* Espaçamento interno */
+      margin-bottom: 10px; /* Margem inferior */
+      border: 1px solid #ccc; /* Borda */
+      border-radius: 5px; /* Bordas arredondadas */
+      font-size: 16px; /* Tamanho da fonte */
+    }
+    /* Estilização do botão */
+    button {
+      width: 100%; /* Largura total */
+      padding: 12px; /* Espaçamento interno */
+      background-color: #007BFF; /* Cor de fundo */
+      color: #fff; /* Cor do texto */
+      border: none; /* Sem borda */
+      border-radius: 5px; /* Bordas arredondadas */
+      font-size: 16px; /* Tamanho da fonte */
+      cursor: pointer; /* Cursor de ponteiro */
+      transition: background-color 0.3s ease; /* Transição suave */
+      margin-bottom: 10px; /* Margem inferior */
+    }
+    /* Estilização do botão ao passar o mouse */
+    button:hover {
+      background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+    }
+    /* Estilização do resultado */
+    .result {
+      margin-top: 20px; /* Margem superior */
+      font-size: 18px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+      text-align: left; /* Alinhamento à esquerda */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Leitor de Nomes</h1>
+    <input type="text" id="nome1" placeholder="Nome 1">
+    <input type="text" id="nome2" placeholder="Nome 2">
+    <input type="text" id="nome3" placeholder="Nome 3">
+    <input type="text" id="nome4" placeholder="Nome 4">
+    <input type="text" id="nome5" placeholder="Nome 5">
+    <input type="text" id="nome6" placeholder="Nome 6">
+    <input type="text" id="nome7" placeholder="Nome 7">
+    <button id="guardarNomes">Guardar Nomes</button>
+    <button id="mostrarNomesInversos">Mostrar Nomes em Ordem Inversa</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    let nomes = [];
+
+    // Adiciona um evento de clique ao botão "Guardar Nomes"
+    document.getElementById('guardarNomes').addEventListener('click', function() {
+      nomes = [];
+      for (let i = 1; i <= 7; i++) {
+        let nome = document.getElementById('nome' + i).value;
+        if (nome.trim() !== '') {
+          nomes.push(nome);
+        } else {
+          alert('Por favor, preencha todos os campos.');
+          return;
+        }
+      }
+      document.getElementById('result').textContent = "Nomes guardados: " + nomes.join(', ');
+    });
+
+    // Adiciona um evento de clique ao botão "Mostrar Nomes em Ordem Inversa"
+    document.getElementById('mostrarNomesInversos').addEventListener('click', function() {
+      let nomesInvertidos = [];
+      for (let i = nomes.length - 1; i >= 0; i--) {
+        nomesInvertidos.push(nomes[i]);
+      }
+      document.getElementById('result').textContent = "Nomes em ordem inversa: " + nomesInvertidos.join(', ');
+    });
+  </script>
+</body>
+</html>

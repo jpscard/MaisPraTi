@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matriz Genérica e Identidade</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      overflow-y: auto;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+    td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 60px;
+      height: 30px;
+      text-align: center;
+    }
+    .highlight {
+      background-color: #ff0;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Matriz Genérica e Identidade 7x7</h1>
+    <table id="matriz"></table>
+    <button id="gerarIdentidade">Gerar Matriz Identidade</button>
+    <button id="destacarDiagonal">Destacar Diagonal Principal</button>
+  </div>
+
+  <script>
+    const tamanho = 7;
+    const matriz = [];
+
+    // Geração da matriz genérica com valores na forma a_{i,j}
+    for (let i = 0; i < tamanho; i++) {
+      matriz[i] = [];
+      for (let j = 0; j < tamanho; j++) {
+        matriz[i][j] = `a_${i+1},${j+1}`; // posições na forma a_{i,j}
+      }
+    }
+
+    // Exibição da matriz genérica na tabela HTML
+    const tabela = document.getElementById('matriz');
+    for (let i = 0; i < tamanho; i++) {
+      const linha = document.createElement('tr');
+      for (let j = 0; j < tamanho; j++) {
+        const celula = document.createElement('td');
+        celula.textContent = matriz[i][j];
+        celula.id = `cell-${i}-${j}`;
+        linha.appendChild(celula);
+      }
+      tabela.appendChild(linha);
+    }
+
+    // Função para gerar a matriz identidade
+    document.getElementById('gerarIdentidade').addEventListener('click', function() {
+      for (let i = 0; i < tamanho; i++) {
+        for (let j = 0; j < tamanho; j++) {
+          const cell = document.getElementById(`cell-${i}-${j}`);
+          if (i === j) {
+            cell.textContent = 1;
+          } else {
+            cell.textContent = 0;
+          }
+        }
+      }
+    });
+
+    // Função para destacar a diagonal principal
+    document.getElementById('destacarDiagonal').addEventListener('click', function() {
+      for (let i = 0; i < tamanho; i++) {
+        const cell = document.getElementById(`cell-${i}-${i}`);
+        cell.classList.toggle('highlight');
+      }
+    });
+  </script>
+</body>
+</html>

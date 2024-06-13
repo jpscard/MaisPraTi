@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transformar Propriedades do Objeto</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    textarea, button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      text-align: left;
+      background-color: #eaeaea;
+      padding: 15px;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Transformar Propriedades do Objeto</h1>
+    <textarea id="inputObjeto" rows="6" placeholder='Digite um objeto em formato JSON...'></textarea>
+    <textarea id="inputFuncao" rows="4" placeholder='Digite uma função de transformação...'></textarea>
+    <button onclick="preencherDados()">Preencher Dados</button>
+    <button onclick="transformarObjeto()">Transformar Objeto</button>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    // Função para preencher automaticamente os campos de entrada com dados de exemplo
+    function preencherDados() {
+      const exemploObjeto = {
+        nome: "João",
+        idade: 25,
+        profissao: "Desenvolvedor",
+        endereco: "Rua A, 123"
+      };
+      const exemploFuncao = `function(valor) {
+  if (typeof valor === 'number') {
+    return valor * 2;
+  }
+  return valor.toUpperCase();
+}`;
+      document.getElementById('inputObjeto').value = JSON.stringify(exemploObjeto, null, 2);
+      document.getElementById('inputFuncao').value = exemploFuncao;
+    }
+
+    // Função para transformar as propriedades do objeto aplicando uma função fornecida
+    function transformarObjeto() {
+      let objeto;
+      try {
+        objeto = JSON.parse(document.getElementById('inputObjeto').value);
+      } catch (e) {
+        alert('Por favor, insira um objeto válido em formato JSON.');
+        return;
+      }
+
+      let funcaoTransformacao;
+      try {
+        funcaoTransformacao = new Function('return ' + document.getElementById('inputFuncao').value)();
+      } catch (e) {
+        alert('Por favor, insira uma função de transformação válida.');
+        return;
+      }
+
+      const objetoTransformado = {};
+      for (const prop in objeto) {
+        if (objeto.hasOwnProperty(prop)) {
+          objetoTransformado[prop] = funcaoTransformacao(objeto[prop]);
+        }
+      }
+
+      exibirResultado(objetoTransformado);
+    }
+
+    // Função para exibir o resultado no elemento <pre>
+    function exibirResultado(resultado) {
+      document.getElementById('output').textContent = JSON.stringify(resultado, null, 2);
+    }
+  </script>
+</body>
+</html>

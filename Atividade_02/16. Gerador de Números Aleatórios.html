@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Números Aleatórios</title>
+  <style>
+    /* Estilização do corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif; /* Fonte da página */
+      background-color: #f4f7f9; /* Cor de fundo */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Altura total da janela de visualização */
+    }
+    /* Estilização do container */
+    .container {
+      background-color: #fff; /* Fundo branco */
+      padding: 30px; /* Espaçamento interno */
+      border-radius: 10px; /* Bordas arredondadas */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      max-width: 600px; /* Largura máxima */
+      width: 100%; /* Largura total */
+      text-align: center; /* Texto centralizado */
+    }
+    /* Estilização do título */
+    h1 {
+      font-size: 24px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+      margin-bottom: 20px; /* Margem inferior */
+    }
+    /* Estilização dos botões */
+    button {
+      width: 100%; /* Largura total */
+      padding: 12px; /* Espaçamento interno */
+      background-color: #007BFF; /* Cor de fundo */
+      color: #fff; /* Cor do texto */
+      border: none; /* Sem borda */
+      border-radius: 5px; /* Bordas arredondadas */
+      font-size: 16px; /* Tamanho da fonte */
+      cursor: pointer; /* Cursor de ponteiro */
+      transition: background-color 0.3s ease; /* Transição suave */
+      margin-bottom: 10px; /* Margem inferior */
+    }
+    /* Estilização do botão ao passar o mouse */
+    button:hover {
+      background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+    }
+    /* Estilização do resultado */
+    .result {
+      margin-top: 20px; /* Margem superior */
+      font-size: 18px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+      text-align: left; /* Alinhamento à esquerda */
+    }
+    /* Estilização dos itens */
+    .numbers {
+      display: flex; /* Exibe os números em linha */
+      flex-wrap: wrap; /* Permite quebra de linha se necessário */
+      gap: 10px; /* Espaçamento entre os itens */
+    }
+    .number {
+      background-color: #f4f7f9; /* Cor de fundo dos itens */
+      padding: 10px; /* Espaçamento interno */
+      border-radius: 5px; /* Bordas arredondadas */
+      border: 1px solid #ddd; /* Borda */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gerador de Números Aleatórios</h1>
+    <button id="gerarNumeros">Gerar Números Aleatórios</button>
+    <button id="ordenarNumeros" disabled>Ordenar Números</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    let numeros = [];
+
+    // Adiciona um evento de clique ao botão "Gerar Números Aleatórios"
+    document.getElementById('gerarNumeros').addEventListener('click', function() {
+      numeros = [];
+      let quantidade = 20;
+      
+      // Gera números aleatórios e preenche o vetor
+      for (let i = 0; i < quantidade; i++) {
+        numeros.push(Math.floor(Math.random() * 100));
+      }
+      
+      // Exibe os números gerados
+      let resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = "<h2>Números Gerados:</h2><div class='numbers'>" + numeros.map(num => `<span class='number'>${num}</span>`).join('') + "</div>";
+
+      // Habilita o botão de ordenar
+      document.getElementById('ordenarNumeros').disabled = false;
+    });
+
+    // Adiciona um evento de clique ao botão "Ordenar Números"
+    document.getElementById('ordenarNumeros').addEventListener('click', function() {
+      // Ordena os números em ordem crescente
+      numeros.sort((a, b) => a - b);
+      
+      // Exibe os números ordenados
+      let resultDiv = document.getElementById('result');
+      resultDiv.innerHTML += "<h2>Números Ordenados:</h2><div class='numbers'>" + numeros.map(num => `<span class='number'>${num}</span>`).join('') + "</div>";
+
+      // Desabilita o botão de ordenar após a ordenação
+      document.getElementById('ordenarNumeros').disabled = true;
+    });
+  </script>
+</body>
+</html>

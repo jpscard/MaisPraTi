@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compactação de Vetor</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 1000px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    /* Estilos para os cabeçalhos */
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    /* Estilos para o grupo de entrada */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .input-group input, .input-group textarea {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    /* Estilos para os botões */
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    /* Estilos para os botões ao serem "hovered" */
+    button:hover {
+      background-color: #0056b3;
+    }
+    /* Estilos para a seção de resultados */
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Compactação de Vetor</h1>
+    <div class="input-group">
+      <label for="inputVetor">Digite os elementos do vetor (100 números separados por vírgula):</label>
+      <textarea id="inputVetor" rows="4" placeholder="Ex: 1,2,3,...,100"></textarea>
+    </div>
+    <button id="preencherDados">Preencher Dados</button>
+    <button id="compactarVetor">Compactar Vetor</button>
+    <div class="result" id="resultados"></div>
+  </div>
+
+  <script>
+    // Função para preencher os campos com dados de exemplo
+    function preencherDados() {
+      const vetorExemplo = Array.from({ length: 100 }, (_, i) => Math.floor(Math.random() * 21) - 10).join(',');
+      document.getElementById('inputVetor').value = vetorExemplo;
+    }
+
+    // Função para compactar o vetor
+    function compactarVetor() {
+      const vetorA = document.getElementById('inputVetor').value.split(',').map(Number);
+      const vetorB = [];
+
+      if (vetorA.length !== 100) {
+        alert('Por favor, insira exatamente 100 números.');
+        return;
+      }
+
+      for (let i = 0; i < vetorA.length; i++) {
+        if (vetorA[i] > 0) {
+          vetorB.push(vetorA[i]);
+        }
+      }
+
+      document.getElementById('resultados').innerHTML = `
+        <h2>Resultado</h2>
+        <p>Vetor B (compactado): ${vetorB.join(', ')}</p>
+      `;
+    }
+
+    // Adicionar eventos aos botões
+    document.getElementById('preencherDados').addEventListener('click', preencherDados);
+    document.getElementById('compactarVetor').addEventListener('click', compactarVetor);
+  </script>
+</body>
+</html>

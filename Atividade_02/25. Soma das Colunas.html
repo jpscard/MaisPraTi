@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matriz 15x20 - Soma das Colunas</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 1500px; /* Aumentar largura da página */
+      width: 100%;
+      overflow-y: auto;
+    }
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    td {
+      border: 1px solid #ccc;
+      padding: 5px;
+      width: 60px; /* Aumentar largura das células */
+      height: 40px; /* Aumentar altura das células */
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Matriz 15x20 - Soma das Colunas</h1>
+    <table id="matriz"></table>
+    <button id="preencherMatriz">Preencher Matriz</button>
+    <button id="calcularSomas">Calcular Somas das Colunas</button>
+    <div class="result" id="somasColunas"></div>
+  </div>
+
+  <script>
+    const linhas = 15;
+    const colunas = 20;
+    const matriz = [];
+
+    // Geração da tabela HTML para entrada da matriz
+    const tabela = document.getElementById('matriz');
+    for (let i = 0; i < linhas; i++) {
+      const linha = document.createElement('tr');
+      matriz[i] = [];
+      for (let j = 0; j < colunas; j++) {
+        const celula = document.createElement('td');
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.step = '0.01';
+        input.id = `cell-${i}-${j}`;
+        matriz[i][j] = input;
+        celula.appendChild(input);
+        linha.appendChild(celula);
+      }
+      tabela.appendChild(linha);
+    }
+
+    // Função para preencher a matriz com valores aleatórios
+    document.getElementById('preencherMatriz').addEventListener('click', function() {
+      for (let i = 0; i < linhas; i++) {
+        for (let j = 0; j < colunas; j++) {
+          document.getElementById(`cell-${i}-${j}`).value = (Math.random() * 20 - 10).toFixed(2); // valores entre -10 e 10
+        }
+      }
+    });
+
+    // Função para calcular a soma das colunas
+    document.getElementById('calcularSomas').addEventListener('click', function() {
+      const somasColunas = Array(colunas).fill(0);
+      for (let j = 0; j < colunas; j++) {
+        for (let i = 0; i < linhas; i++) {
+          const valor = parseFloat(document.getElementById(`cell-${i}-${j}`).value);
+          if (!isNaN(valor)) {
+            somasColunas[j] += valor;
+          }
+        }
+      }
+
+      // Exibição das somas das colunas
+      const resultDiv = document.getElementById('somasColunas');
+      resultDiv.innerHTML = '<h2>Somas das Colunas</h2>';
+      for (let j = 0; j < colunas; j++) {
+        resultDiv.innerHTML += `<p>Coluna ${j + 1}: ${somasColunas[j].toFixed(2)}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>

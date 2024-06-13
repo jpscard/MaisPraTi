@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device=device-width, initial-scale=1.0">
+  <title>Contar Frequência de Strings</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    textarea, button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      text-align: left;
+      background-color: #eaeaea;
+      padding: 15px;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contar Frequência de Strings</h1>
+    <textarea id="inputStrings" rows="4" placeholder="Digite strings separadas por vírgula..."></textarea>
+    <button onclick="preencherDados()">Preencher Dados</button>
+    <button onclick="contarFrequencia()">Contar Frequência</button>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    // Função para preencher automaticamente o campo de entrada
+    function preencherDados() {
+      const exemplos = ['apple', 'banana', 'apple', 'orange', 'banana', 'apple'];
+      document.getElementById('inputStrings').value = exemplos.join(', ');
+    }
+
+    // Função para contar a frequência de cada string no array
+    function contarFrequencia() {
+      const input = document.getElementById('inputStrings').value;
+      const strings = input.split(',').map(str => str.trim());
+      const frequencia = {};
+
+      strings.forEach(str => {
+        if (frequencia[str]) {
+          frequencia[str]++;
+        } else {
+          frequencia[str] = 1;
+        }
+      });
+
+      exibirResultado(frequencia);
+    }
+
+    // Função para exibir o resultado no elemento <pre>
+    function exibirResultado(resultado) {
+      document.getElementById('output').textContent = JSON.stringify(resultado, null, 2);
+    }
+  </script>
+</body>
+</html>

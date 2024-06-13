@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificador de Triângulo</title>
+  <style>
+    /* Estilização do corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif; /* Fonte da página */
+      background-color: #f4f7f9; /* Cor de fundo */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Altura total da janela de visualização */
+    }
+    /* Estilização do container */
+    .container {
+      background-color: #fff; /* Fundo branco */
+      padding: 30px; /* Espaçamento interno */
+      border-radius: 10px; /* Bordas arredondadas */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      max-width: 400px; /* Largura máxima */
+      width: 100%; /* Largura total */
+      text-align: center; /* Texto centralizado */
+    }
+    /* Estilização do título */
+    h1 {
+      font-size: 24px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+      margin-bottom: 20px; /* Margem inferior */
+    }
+    /* Estilização dos rótulos */
+    label {
+      display: block; /* Exibição em bloco */
+      font-size: 14px; /* Tamanho da fonte */
+      color: #555; /* Cor do texto */
+      margin-bottom: 5px; /* Margem inferior */
+      text-align: left; /* Alinhamento à esquerda */
+    }
+    /* Estilização dos campos de entrada */
+    input[type="number"] {
+      width: calc(100% - 20px); /* Largura calculada */
+      padding: 10px; /* Espaçamento interno */
+      margin-bottom: 20px; /* Margem inferior */
+      border: 1px solid #ccc; /* Borda */
+      border-radius: 5px; /* Bordas arredondadas */
+      box-sizing: border-box; /* Inclui borda e padding no cálculo da largura */
+    }
+    /* Estilização do botão */
+    button {
+      width: 100%; /* Largura total */
+      padding: 12px; /* Espaçamento interno */
+      background-color: #007BFF; /* Cor de fundo */
+      color: #fff; /* Cor do texto */
+      border: none; /* Sem borda */
+      border-radius: 5px; /* Bordas arredondadas */
+      font-size: 16px; /* Tamanho da fonte */
+      cursor: pointer; /* Cursor de ponteiro */
+      transition: background-color 0.3s ease; /* Transição suave */
+    }
+    /* Estilização do botão ao passar o mouse */
+    button:hover {
+      background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+    }
+    /* Estilização do resultado */
+    .result {
+      margin-top: 20px; /* Margem superior */
+      font-size: 18px; /* Tamanho da fonte */
+      color: #333; /* Cor do texto */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Verificador de Triângulo</h1>
+    <form id="trianguloForm">
+      <label for="segmentoA">Segmento A (cm):</label>
+      <input type="number" id="segmentoA" name="segmentoA" min="1" required>
+      
+      <label for="segmentoB">Segmento B (cm):</label>
+      <input type="number" id="segmentoB" name="segmentoB" min="1" required>
+      
+      <label for="segmentoC">Segmento C (cm):</label>
+      <input type="number" id="segmentoC" name="segmentoC" min="1" required>
+      
+      <button type="submit">Verificar</button>
+    </form>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    // Adiciona um evento de submissão ao formulário
+    document.getElementById('trianguloForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Previne o comportamento padrão do formulário
+      
+      // Obtém os valores dos campos de entrada
+      let segmentoA = parseFloat(document.getElementById('segmentoA').value);
+      let segmentoB = parseFloat(document.getElementById('segmentoB').value);
+      let segmentoC = parseFloat(document.getElementById('segmentoC').value);
+
+      // Verifica se os valores são válidos e formam um triângulo
+      let formaTriangulo = (segmentoA < segmentoB + segmentoC) && (segmentoB < segmentoA + segmentoC) && (segmentoC < segmentoA + segmentoB);
+      
+      // Exibe o resultado
+      if (formaTriangulo) {
+        document.getElementById('result').textContent = "Os segmentos formam um triângulo.";
+        document.getElementById('result').style.color = 'green'; // Define a cor do texto do resultado
+      } else {
+        document.getElementById('result').textContent = "Os segmentos não formam um triângulo.";
+        document.getElementById('result').style.color = 'red'; // Define a cor do texto do resultado
+      }
+    });
+  </script>
+</body>
+</html>

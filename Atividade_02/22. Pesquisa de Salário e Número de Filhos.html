@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa de Salário e Número de Filhos</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 26px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      margin-bottom: 5px;
+      text-align: left;
+    }
+    .input-group input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      width: calc(100% - 22px);
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 18px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pesquisa de Salário e Número de Filhos</h1>
+    <div class="input-group">
+      <label for="salario">Salário:</label>
+      <input type="number" id="salario" placeholder="Digite o salário">
+      <label for="filhos">Número de Filhos:</label>
+      <input type="number" id="filhos" placeholder="Digite o número de filhos">
+    </div>
+    <button id="adicionar">Adicionar Dados</button>
+    <button id="calcular">Calcular Estatísticas</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const salarios = [];
+    const numerosFilhos = [];
+
+    document.getElementById('adicionar').addEventListener('click', function() {
+      const salario = parseFloat(document.getElementById('salario').value);
+      const filhos = parseInt(document.getElementById('filhos').value);
+
+      if (isNaN(salario) || isNaN(filhos)) {
+        alert('Por favor, insira valores válidos.');
+        return;
+      }
+
+      salarios.push(salario);
+      numerosFilhos.push(filhos);
+
+      document.getElementById('salario').value = '';
+      document.getElementById('filhos').value = '';
+
+      alert('Dados adicionados com sucesso!');
+    });
+
+    document.getElementById('calcular').addEventListener('click', function() {
+      if (salarios.length === 0) {
+        alert('Nenhum dado foi adicionado.');
+        return;
+      }
+
+      const totalSalarios = salarios.reduce((acc, val) => acc + val, 0);
+      const totalFilhos = numerosFilhos.reduce((acc, val) => acc + val, 0);
+      const mediaSalarios = totalSalarios / salarios.length;
+      const mediaFilhos = totalFilhos / numerosFilhos.length;
+      const maiorSalario = Math.max(...salarios);
+      const percentualSalariosAte350 = (salarios.filter(sal => sal <= 350).length / salarios.length) * 100;
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        <h2>Estatísticas</h2>
+        <p>Média de Salário: R$ ${mediaSalarios.toFixed(2)}</p>
+        <p>Média de Número de Filhos: ${mediaFilhos.toFixed(2)}</p>
+        <p>Maior Salário: R$ ${maiorSalario.toFixed(2)}</p>
+        <p>Percentual de Pessoas com Salário até R$ 350,00: ${percentualSalariosAte350.toFixed(2)}%</p>
+      `;
+    });
+  </script>
+</body>
+</html>

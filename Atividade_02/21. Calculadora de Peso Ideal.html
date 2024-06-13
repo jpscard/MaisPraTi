@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Peso Ideal</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    input, select {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora de Peso Ideal</h1>
+    <input type="number" id="altura" placeholder="Altura (em metros)" step="0.01">
+    <select id="sexo">
+      <option value="masculino">Masculino</option>
+      <option value="feminino">Feminino</option>
+    </select>
+    <button id="calcularPesoIdeal">Calcular Peso Ideal</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('calcularPesoIdeal').addEventListener('click', function() {
+      const altura = parseFloat(document.getElementById('altura').value);
+      const sexo = document.getElementById('sexo').value;
+      let pesoIdeal;
+
+      if (isNaN(altura) || altura <= 0) {
+        alert('Por favor, insira uma altura válida.');
+        return;
+      }
+
+      if (sexo === 'masculino') {
+        pesoIdeal = 72.7 * altura - 58;
+      } else if (sexo === 'feminino') {
+        pesoIdeal = 62.1 * altura - 44.7;
+      } else {
+        alert('Por favor, selecione um sexo válido.');
+        return;
+      }
+
+      document.getElementById('result').textContent = `Peso Ideal: ${pesoIdeal.toFixed(2)} kg`;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificação de Resultados de Prova</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 1000px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    /* Estilos para os cabeçalhos */
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    /* Estilos para o grupo de entrada */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .input-group input, .input-group textarea {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    /* Estilos para os botões */
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    /* Estilos para os botões ao serem "hovered" */
+    button:hover {
+      background-color: #0056b3;
+    }
+    /* Estilos para a seção de resultados */
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+    .result ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .result li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Verificação de Resultados de Prova</h1>
+    <div class="input-group">
+      <label for="inputGabarito">Digite o gabarito (20 caracteres separados por vírgula):</label>
+      <input type="text" id="inputGabarito" placeholder="Ex: A,B,C,D,E,A,B,C,D,E,A,B,C,D,E,A,B,C,D,E" />
+      <label for="inputAlunos">Digite as respostas dos alunos (50 linhas, cada linha com 20 caracteres separados por vírgula):</label>
+      <textarea id="inputAlunos" rows="10" placeholder="Ex: A,B,C,D,E,A,B,C,D,E,A,B,C,D,E,A,B,C,D,E&#10;B,C,D,E,A,B,C,D,E,A,B,C,D,E,A,B,C,D,E,A&#10;..."></textarea>
+    </div>
+    <button id="preencherDados">Preencher Dados</button>
+    <button id="verificarResultados">Verificar Resultados</button>
+    <div class="result" id="resultados"></div>
+  </div>
+
+  <script>
+    // Função para preencher os campos com dados de exemplo
+    function preencherDados() {
+      const gabaritoExemplo = Array.from({ length: 20 }, () => 'ABCD'.charAt(Math.floor(Math.random() * 4))).join(',');
+      const alunosExemplo = Array.from({ length: 50 }, () => {
+        const respostas = Array.from({ length: 20 }, () => 'ABCD'.charAt(Math.floor(Math.random() * 4))).join(',');
+        return respostas;
+      }).join('\n');
+
+      document.getElementById('inputGabarito').value = gabaritoExemplo;
+      document.getElementById('inputAlunos').value = alunosExemplo;
+    }
+
+    // Função para verificar os resultados
+    function verificarResultados() {
+      const gabarito = document.getElementById('inputGabarito').value.split(',').map(char => char.trim());
+      const alunosInput = document.getElementById('inputAlunos').value.split('\n');
+      const resultados = [];
+
+      if (gabarito.length !== 20) {
+        alert('Por favor, insira exatamente 20 caracteres no gabarito.');
+        return;
+      }
+
+      if (alunosInput.length !== 50) {
+        alert('Por favor, insira exatamente 50 linhas de respostas dos alunos.');
+        return;
+      }
+
+      alunosInput.forEach((aluno, index) => {
+        const respostas = aluno.split(',').map(char => char.trim());
+
+        if (respostas.length !== 20) {
+          alert(`Por favor, insira exatamente 20 respostas para o aluno ${index + 1}.`);
+          return;
+        }
+
+        let acertos = 0;
+        for (let i = 0; i < 20; i++) {
+          if (respostas[i] === gabarito[i]) {
+            acertos++;
+          }
+        }
+
+        let mensagem = `Aluno ${index + 1}: ${acertos} acertos. `;
+        mensagem += acertos >= 12 ? "APROVADO" : "REPROVADO";
+        resultados.push(mensagem);
+      });
+
+      document.getElementById('resultados').innerHTML = `
+        <h2>Resultados</h2>
+        <ul>${resultados.map(item => `<li>${item}</li>`).join('')}</ul>
+      `;
+    }
+
+    // Adicionar eventos aos botões
+    document.getElementById('preencherDados').addEventListener('click', preencherDados);
+    document.getElementById('verificarResultados').addEventListener('click', verificarResultados);
+  </script>
+</body>
+</html>

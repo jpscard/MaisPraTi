@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leitor de Horários</title>
+  <style>
+    /* Estilização do corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    /* Estilização do container */
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    /* Estilização do título */
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    /* Estilização dos campos de entrada */
+    input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    /* Estilização do botão */
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    /* Estilização do resultado */
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Leitor de Horários</h1>
+    <div id="inputsContainer"></div>
+    <button id="preencherHorarios">Preencher Horários</button>
+    <button id="validarHorarios">Validar Horários</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const container = document.getElementById('inputsContainer');
+
+    for (let i = 0; i < 5; i++) {
+      const horarioInput = document.createElement('input');
+      horarioInput.type = 'text';
+      horarioInput.placeholder = `Horário ${i + 1} (HH:MM:SS)`;
+      horarioInput.id = `horario${i}`;
+      container.appendChild(horarioInput);
+    }
+
+    document.getElementById('preencherHorarios').addEventListener('click', function() {
+      const horariosExemplo = ["12:30:45", "08:15:00", "22:45:30", "07:05:10", "16:50:00"];
+      for (let i = 0; i < 5; i++) {
+        document.getElementById(`horario${i}`).value = horariosExemplo[i];
+      }
+    });
+
+    document.getElementById('validarHorarios').addEventListener('click', function() {
+      const horarios = [];
+      let validos = true;
+      let erroMensagem = '';
+
+      for (let i = 0; i < 5; i++) {
+        const horario = document.getElementById(`horario${i}`).value;
+        const partes = horario.split(':');
+
+        if (partes.length !== 3) {
+          validos = false;
+          erroMensagem = `Horário ${i + 1} está no formato incorreto. Use HH:MM:SS.`;
+          break;
+        }
+
+        const horas = parseInt(partes[0], 10);
+        const minutos = parseInt(partes[1], 10);
+        const segundos = parseInt(partes[2], 10);
+
+        if (
+          isNaN(horas) || isNaN(minutos) || isNaN(segundos) ||
+          horas < 0 || horas > 23 ||
+          minutos < 0 || minutos > 59 ||
+          segundos < 0 || segundos > 59
+        ) {
+          validos = false;
+          erroMensagem = `Horário ${i + 1} contém valores inválidos.`;
+          break;
+        }
+
+        horarios.push(
+          String(horas).padStart(2, '0') + '.' +
+          String(minutos).padStart(2, '0') + '.' +
+          String(segundos).padStart(2, '0')
+        );
+      }
+
+      const resultDiv = document.getElementById('result');
+      if (validos) {
+        resultDiv.innerHTML = '<h2>Horários Validados</h2>' + horarios.map(horario => `<p>${horario}</p>`).join('');
+      } else {
+        resultDiv.textContent = erroMensagem;
+      }
+    });
+  </script>
+</body>
+</html>

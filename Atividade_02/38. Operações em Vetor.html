@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operações em Vetor</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    /* Estilos para os cabeçalhos */
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    /* Estilos para o grupo de entrada */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .input-group input {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    /* Estilos para os botões */
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    /* Estilos para os botões ao serem "hovered" */
+    button:hover {
+      background-color: #0056b3;
+    }
+    /* Estilos para a seção de resultados */
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Operações em Vetor</h1>
+    <div class="input-group">
+      <label for="inputVetor">Digite os elementos do vetor (6 números separados por vírgula):</label>
+      <input type="text" id="inputVetor" placeholder="Ex: 1,2,3,4,5,6" />
+      <label for="inputOperacao">Digite a operação (1 - soma, 2 - produto, 3 - média, 4 - ordenar, 5 - mostrar):</label>
+      <input type="number" id="inputOperacao" min="1" max="5" />
+    </div>
+    <button id="preencherDados">Preencher Dados</button>
+    <button id="executarOperacao">Executar Operação</button>
+    <div class="result" id="resultados"></div>
+  </div>
+
+  <script>
+    // Função para preencher os campos com dados de exemplo
+    function preencherDados() {
+      const vetorExemplo = [1, 2, 3, 4, 5, 6].join(',');
+      document.getElementById('inputVetor').value = vetorExemplo;
+      document.getElementById('inputOperacao').value = 1; // Exemplo de operação
+    }
+
+    // Função para executar a operação no vetor
+    function executarOperacao() {
+      const vetor = document.getElementById('inputVetor').value.split(',').map(Number);
+      const operacao = parseInt(document.getElementById('inputOperacao').value);
+      let resultado;
+
+      if (vetor.length !== 6) {
+        alert('Por favor, insira exatamente 6 números.');
+        return;
+      }
+
+      switch (operacao) {
+        case 1:
+          resultado = `Soma dos elementos: ${vetor.reduce((a, b) => a + b, 0)}`;
+          break;
+        case 2:
+          resultado = `Produto dos elementos: ${vetor.reduce((a, b) => a * b, 1)}`;
+          break;
+        case 3:
+          resultado = `Média dos elementos: ${(vetor.reduce((a, b) => a + b, 0) / vetor.length).toFixed(2)}`;
+          break;
+        case 4:
+          resultado = `Elementos ordenados: ${vetor.sort((a, b) => a - b).join(', ')}`;
+          break;
+        case 5:
+          resultado = `Vetor: ${vetor.join(', ')}`;
+          break;
+        default:
+          alert('Operação inválida. Por favor, insira um número entre 1 e 5.');
+          return;
+      }
+
+      document.getElementById('resultados').innerHTML = `<h2>Resultado</h2><p>${resultado}</p>`;
+    }
+
+    // Adicionar eventos aos botões
+    document.getElementById('preencherDados').addEventListener('click', preencherDados);
+    document.getElementById('executarOperacao').addEventListener('click', executarOperacao);
+  </script>
+</body>
+</html>

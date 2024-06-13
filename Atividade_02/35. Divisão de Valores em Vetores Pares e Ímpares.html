@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Divisão de Valores em Vetores Pares e Ímpares</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 800px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .input-group input {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+    .result ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .result li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Divisão de Valores em Vetores Pares e Ímpares</h1>
+    <div class="input-group">
+      <label for="inputValores">Digite 30 valores separados por vírgula:</label>
+      <input type="text" id="inputValores" placeholder="Ex: 1,2,3,4,5,...,30" />
+    </div>
+    <button id="preencherValores">Preencher Valores</button>
+    <button id="processarValores">Processar Valores</button>
+    <div class="result" id="resultados"></div>
+  </div>
+
+  <script>
+    function preencherValores() {
+      const valoresAleatorios = Array.from({ length: 30 }, () => Math.floor(Math.random() * 100)).join(',');
+      document.getElementById('inputValores').value = valoresAleatorios;
+    }
+
+    function processarValores() {
+      const input = document.getElementById('inputValores').value;
+      const valores = input.split(',').map(Number);
+      const pares = [];
+      const impares = [];
+      const resultado = [];
+
+      if (valores.length !== 30 || valores.some(isNaN)) {
+        alert('Por favor, insira exatamente 30 valores numéricos separados por vírgula.');
+        return;
+      }
+
+      valores.forEach(valor => {
+        if (valor % 2 === 0) {
+          pares.push(valor);
+          if (pares.length === 5) {
+            resultado.push('Vetor de Pares: ' + pares.join(', '));
+            pares.length = 0;
+          }
+        } else {
+          impares.push(valor);
+          if (impares.length === 5) {
+            resultado.push('Vetor de Ímpares: ' + impares.join(', '));
+            impares.length = 0;
+          }
+        }
+      });
+
+      if (pares.length > 0) {
+        resultado.push('Vetor de Pares: ' + pares.join(', '));
+      }
+
+      if (impares.length > 0) {
+        resultado.push('Vetor de Ímpares: ' + impares.join(', '));
+      }
+
+      document.getElementById('resultados').innerHTML = `
+        <h2>Resultados</h2>
+        <ul>${resultado.map(item => `<li>${item}</li>`).join('')}</ul>
+      `;
+    }
+
+    document.getElementById('preencherValores').addEventListener('click', preencherValores);
+    document.getElementById('processarValores').addEventListener('click', processarValores);
+  </script>
+</body>
+</html>

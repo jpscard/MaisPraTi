@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matriz M e Vetor C</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 800px;
+      width: 100%;
+      overflow-y: auto;
+    }
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      text-align: center;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Matriz M[1..6, 1..8]</h1>
+    <table id="matrizM"></table>
+    <button id="preencherMatriz">Preencher Matriz</button>
+    <button id="calcularVetorC">Calcular Vetor C</button>
+    <div class="result" id="vetorC"></div>
+  </div>
+
+  <script>
+    const linhas = 6;
+    const colunas = 8;
+
+    // Função para criar a tabela HTML para a matriz M
+    function criarTabela() {
+      const tabelaM = document.getElementById('matrizM');
+      tabelaM.innerHTML = ''; // Limpar tabela anterior
+
+      for (let i = 0; i < linhas; i++) {
+        const linha = document.createElement('tr');
+        for (let j = 0; j < colunas; j++) {
+          const celula = document.createElement('td');
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.id = `m${i}${j}`;
+          celula.appendChild(input);
+          linha.appendChild(celula);
+        }
+        tabelaM.appendChild(linha);
+      }
+    }
+
+    criarTabela(); // Inicializar a tabela
+
+    // Função para preencher a matriz com valores aleatórios
+    document.getElementById('preencherMatriz').addEventListener('click', function() {
+      for (let i = 0; i < linhas; i++) {
+        for (let j = 0; j < colunas; j++) {
+          document.getElementById(`m${i}${j}`).value = Math.floor(Math.random() * 21) - 10; // valores entre -10 e 10
+        }
+      }
+    });
+
+    // Função para calcular o vetor C
+    document.getElementById('calcularVetorC').addEventListener('click', function() {
+      const vetorC = [];
+      for (let i = 0; i < linhas; i++) {
+        let countNegativos = 0;
+        for (let j = 0; j < colunas; j++) {
+          const valor = parseFloat(document.getElementById(`m${i}${j}`).value);
+          if (valor < 0) {
+            countNegativos++;
+          }
+        }
+        vetorC.push(countNegativos);
+      }
+
+      // Exibição do vetor C
+      const resultDiv = document.getElementById('vetorC');
+      resultDiv.innerHTML = '<h2>Vetor C (Quantidade de Negativos por Linha)</h2>';
+      for (let i = 0; i < vetorC.length; i++) {
+        resultDiv.innerHTML += `<p>Linha ${i + 1}: ${vetorC[i]} negativos</p>`;
+      }
+    });
+  </script>
+</body>
+</html>

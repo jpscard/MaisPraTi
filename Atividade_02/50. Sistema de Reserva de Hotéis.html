@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reserva de Hotéis</title>
+    <style>
+        /* Estilos para o corpo da página */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        /* Estilos para o contêiner principal */
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            overflow-x: auto;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        input, button, select {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            text-align: left;
+            background-color: #eaeaea;
+            padding: 15px;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sistema de Reserva de Hotéis</h1>
+        <select id="menu">
+            <option value="adicionarHotel">Adicionar Hotel</option>
+            <option value="buscarHoteisPorCidade">Buscar Hotéis por Cidade</option>
+            <option value="fazerReserva">Fazer Reserva</option>
+            <option value="cancelarReserva">Cancelar Reserva</option>
+            <option value="listarReservas">Listar Reservas</option>
+        </select>
+        <div id="formContainer"></div>
+        <button onclick="executarFuncao()">Executar</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        // Arrays para armazenar os dados dos hotéis e reservas
+        const hoteis = [];
+        const reservas = [];
+
+        // Variáveis para controle dos IDs incrementais
+        let idHotelAtual = 1;
+        let idReservaAtual = 1;
+
+        // Função para exibir o formulário apropriado com base na seleção do usuário
+        function exibirFormulario(opcao) {
+            const formContainer = document.getElementById('formContainer');
+            formContainer.innerHTML = '';
+
+            switch (opcao) {
+                case 'adicionarHotel':
+                    formContainer.innerHTML = `
+                        <input id="nomeHotel" type="text" placeholder="Nome do Hotel">
+                        <input id="cidadeHotel" type="text" placeholder="Cidade">
+                        <input id="quartosTotais" type="number" placeholder="Quartos Totais">
+                    `;
+                    break;
+                case 'buscarHoteisPorCidade':
+                    formContainer.innerHTML = `<input id="cidadeBusca" type="text" placeholder="Cidade">`;
+                    break;
+                case 'fazerReserva':
+                    formContainer.innerHTML = `
+                        <input id="idHotelReserva" type="text" placeholder="ID do Hotel">
+                        <input id="nomeClienteReserva" type="text" placeholder="Nome do Cliente">
+                    `;
+                    break;
+                case 'cancelarReserva':
+                    formContainer.innerHTML = `<input id="idReservaCancela" type="text" placeholder="ID da Reserva">`;
+                    break;
+                case 'listarReservas':
+                    formContainer.innerHTML = '';
+                    break;
+            }
+        }
+
+        // Função para executar a ação escolhida pelo usuário
+        function executarFuncao() {
+            const opcao = document.getElementById('menu').value;
+            switch (opcao) {
+                case 'adicionarHotel':
+                    adicionarHotel();
+                    break;
+                case 'buscarHoteisPorCidade':
+                    buscarHoteisPorCidade();
+                    break;
+                case 'fazerReserva':
+                    fazerReserva();
+                    break;
+                case 'cancelarReserva':
+                    cancelarReserva();
+                    break;
+                case 'listarReservas':
+                    listarReservas();
+                    break;
+            }
+        }
+
+        // Função para adicionar um novo hotel
+        function adicionarHotel() {
+            const nome = document.getElementById('nomeHotel').value;
+            const cidade = document.getElementById('cidadeHotel').value;
+            const quartosTotais = parseInt(document.getElementById('quartosTotais').value);
+
+            // Verifica se o número de quartos é válido
+            if (isNaN(quartosTotais) || quartosTotais <= 0) {
+                document.getElementById('result').textContent = "Número total de quartos inválido.";
+                return;
+            }
+
+            // Cria um novo objeto hotel e adiciona ao array de hotéis
+            const novoHotel = {
+                id: idHotelAtual++,
+                nome,
+                cidade,
+                quartosTotais,
+                quartosDisponiveis: quartosTotais
+            };
+            hoteis.push(novoHotel);
+            document.getElementById('result').textContent = `Hotel ${nome} adicionado com sucesso.`;
+        }
+
+        // Função para buscar hotéis por cidade
+        function buscarHoteisPorCidade() {
+            const cidade = document.getElementById('cidadeBusca').value;
+            const hoteisEncontrados = hoteis.filter(hotel => hotel.cidade.toLowerCase() === cidade.toLowerCase());
+            if (hoteisEncontrados.length > 0) {
+                let resultText = `Hotéis disponíveis em ${cidade}:\n`;
+                hoteisEncontrados.forEach(hotel => {
+                    resultText += `ID: ${hotel.id}, Nome: ${hotel.nome}, Quartos Disponíveis: ${hotel.quartosDisponiveis}\n`;
+                });
+                document.getElementById('result').textContent = resultText;
+            } else {
+                document.getElementById('result').textContent = `Nenhum hotel encontrado em ${cidade}.`;
+            }
+        }
+
+        // Função para fazer uma reserva em um hotel
+        function fazerReserva() {
+            const idHotel = parseInt(document.getElementById('idHotelReserva').value);
+            const nomeCliente = document.getElementById('nomeClienteReserva').value;
+
+            // Encontra o hotel pelo ID
+            const hotel = hoteis.find(h => h.id === idHotel);
+            if (hotel && hotel.quartosDisponiveis > 0) {
+                // Reduz o número de quartos disponíveis e cria uma nova reserva
+                hotel.quartosDisponiveis--;
+                const novaReserva = {
+                    idReserva: idReservaAtual++,
+                    idHotel,
+                    nomeCliente
+                };
+                reservas.push(novaReserva);
+                document.getElementById('result').textContent = `Reserva feita com sucesso para ${nomeCliente} no hotel ${hotel.nome}.`;
+            } else if (!hotel) {
+                document.getElementById('result').textContent = `Hotel com ID ${idHotel} não encontrado.`;
+            } else {
+                document.getElementById('result').textContent = `Não há quartos disponíveis no hotel ${hotel.nome}.`;
+            }
+        }
+
+        // Função para cancelar uma reserva
+        function cancelarReserva() {
+            const idReserva = parseInt(document.getElementById('idReservaCancela').value);
+
+            // Encontra a reserva pelo ID
+            const reservaIndex = reservas.findIndex(r => r.idReserva === idReserva);
+            if (reservaIndex !== -1) {
+                const reserva = reservas[reservaIndex];
+                const hotel = hoteis.find(h => h.id === reserva.idHotel);
+                if (hotel) {
+                    // Aumenta o número de quartos disponíveis e remove a reserva
+                    hotel.quartosDisponiveis++;
+                    reservas.splice(reservaIndex, 1);
+                    document.getElementById('result').textContent = `Reserva de ${reserva.nomeCliente} no hotel ${hotel.nome} cancelada com sucesso.`;
+                } else {
+                    document.getElementById('result').textContent = `Hotel associado à reserva não encontrado.`;
+                }
+            } else {
+                document.getElementById('result').textContent = `Reserva com ID ${idReserva} não encontrada.`;
+            }
+        }
+
+        // Função para listar todas as reservas
+        function listarReservas() {
+            if (reservas.length > 0) {
+                let resultText = 'Reservas:\n';
+                reservas.forEach(reserva => {
+                    const hotel = hoteis.find(h => h.id === reserva.idHotel);
+                    if (hotel) {
+                        resultText += `ID Reserva: ${reserva.idReserva}, Hotel: ${hotel.nome}, Cliente: ${reserva.nomeCliente}\n`;
+                    } else {
+                        resultText += `ID Reserva: ${reserva.idReserva}, Hotel não encontrado, Cliente: ${reserva.nomeCliente}\n`;
+                    }
+                });
+                document.getElementById('result').textContent = resultText;
+            } else {
+                document.getElementById('result').textContent = 'Nenhuma reserva encontrada.';
+            }
+        }
+
+        // Listener para alterar o formulário com base na seleção do usuário
+        document.getElementById('menu').addEventListener('change', (event) => {
+            exibirFormulario(event.target.value);
+        });
+
+        // Exibir formulário inicial
+        exibirFormulario(document.getElementById('menu').value);
+    </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiplicação de Linhas por Diagonal Principal</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 1700px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    /* Estilos para os cabeçalhos */
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    /* Estilos para a tabela */
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    /* Estilos para as células da tabela */
+    td {
+      border: 1px solid #ccc;
+      padding: 0;
+      width: 50px;
+      height: 50px;
+      text-align: center;
+    }
+    /* Estilos para os campos de entrada */
+    input[type="number"] {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      border: none;
+      font-size: 14px;
+      background-color: #f4f7f9;
+      border-radius: 4px;
+      color: #333; /* Cor do texto para maior visibilidade */
+      transition: background-color 0.3s ease;
+    }
+    /* Estilos para os campos de entrada ao receberem foco */
+    input[type="number"]:focus {
+      background-color: #e6f0ff;
+      outline: none;
+    }
+    /* Estilos para os botões */
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    /* Estilos para os botões ao serem "hovered" */
+    button:hover {
+      background-color: #0056b3;
+    }
+    /* Estilos para a seção de resultados */
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Multiplicação de Linhas por Diagonal Principal</h1>
+    <h2>Matriz 50x50</h2>
+    <table id="matriz"></table>
+    <button id="preencherMatriz">Preencher Matriz</button>
+    <button id="calcular">Calcular</button>
+    <div class="result" id="resultados"></div>
+  </div>
+
+  <script>
+    const linhas = 50;
+    const colunas = 50;
+
+    // Função para criar uma tabela HTML para a matriz
+    function criarTabela(matrizId) {
+      const tabela = document.getElementById(matrizId);
+      tabela.innerHTML = '';  // Limpa a tabela antes de recriar
+      for (let i = 0; i < linhas; i++) {
+        const linha = document.createElement('tr');
+        for (let j = 0; j < colunas; j++) {
+          const celula = document.createElement('td');
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.step = 'any'; // Permitir números reais
+          input.id = `${matrizId}-cell-${i}-${j}`;
+          celula.appendChild(input);
+          linha.appendChild(celula);
+        }
+        tabela.appendChild(linha);
+      }
+    }
+
+    // Função para preencher a matriz com valores aleatórios
+    function preencherMatriz(matrizId) {
+      for (let i = 0; i < linhas; i++) {
+        for (let j = 0; j < colunas; j++) {
+          const valorAleatorio = (Math.random() * 100 - 50).toFixed(2); // Valores entre -50 e 50
+          document.getElementById(`${matrizId}-cell-${i}-${j}`).value = valorAleatorio;
+        }
+      }
+    }
+
+    // Criar tabela para a matriz
+    criarTabela('matriz');
+
+    // Evento para preencher a matriz com valores aleatórios
+    document.getElementById('preencherMatriz').addEventListener('click', function() {
+      preencherMatriz('matriz');
+    });
+
+    // Função para calcular os valores e criar a matriz modificada
+    document.getElementById('calcular').addEventListener('click', function() {
+      let matriz = [];
+
+      for (let i = 0; i < linhas; i++) {
+        let linha = [];
+        for (let j = 0; j < colunas; j++) {
+          const valor = parseFloat(document.getElementById(`matriz-cell-${i}-${j}`).value);
+          linha.push(valor);
+        }
+        matriz.push(linha);
+      }
+
+      // Multiplicar cada linha pelo elemento correspondente da diagonal principal
+      for (let i = 0; i < linhas; i++) {
+        const diagonalPrincipal = matriz[i][i];
+        for (let j = 0; j < colunas; j++) {
+          matriz[i][j] *= diagonalPrincipal;
+        }
+      }
+
+      // Exibição dos resultados
+      const resultDiv = document.getElementById('resultados');
+      resultDiv.innerHTML = `
+        <h2>Matriz Original</h2>
+        <table id="matrizOriginal"></table>
+        <h2>Matriz Modificada</h2>
+        <table id="matrizModificada"></table>
+      `;
+
+      // Exibir a matriz original
+      const matrizOriginal = document.getElementById('matrizOriginal');
+      matrizOriginal.innerHTML = '';
+      for (let i = 0; i < linhas; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < colunas; j++) {
+          const celula = document.createElement('td');
+          celula.textContent = document.getElementById(`matriz-cell-${i}-${j}`).value;
+          row.appendChild(celula);
+        }
+        matrizOriginal.appendChild(row);
+      }
+
+      // Exibir a matriz modificada
+      const matrizModificadaTable = document.getElementById('matrizModificada');
+      matrizModificadaTable.innerHTML = '';
+      for (let i = 0; i < linhas; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < colunas; j++) {
+          const celula = document.createElement('td');
+          celula.textContent = matriz[i][j].toFixed(2);
+          row.appendChild(celula);
+        }
+        matrizModificadaTable.appendChild(row);
+      }
+    });
+  </script>
+</body>
+</html>

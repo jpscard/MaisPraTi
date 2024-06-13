@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combinar Objetos</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    button {
+      margin: 10px 0;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    pre {
+      text-align: left;
+      background-color: #eaeaea;
+      padding: 15px;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Combinar Objetos</h1>
+    <button onclick="gerarPreenchimento()">Gerar Preenchimento</button>
+    <button onclick="combinarObjetos()">Combinar Objetos</button>
+    <pre id="outputObj1"></pre>
+    <pre id="outputObj2"></pre>
+    <pre id="outputCombinado"></pre>
+  </div>
+
+  <script>
+    // Objetos iniciais
+    let obj1 = {};
+    let obj2 = {};
+
+    // Função para gerar preenchimento automático
+    function gerarPreenchimento() {
+      const nomesExemplo = ['Ana', 'Bruno', 'Carlos', 'Diana', 'Eduardo'];
+      const hobbiesExemplo = ['futebol', 'leitura', 'corrida', 'cozinha', 'viagem'];
+      const enderecoExemplo = ['Rua A, 123', 'Avenida B, 456', 'Travessa C, 789'];
+      const telefoneExemplo = ['1234-5678', '9876-5432', '1122-3344'];
+
+      obj1 = {
+        nome: nomesExemplo[Math.floor(Math.random() * nomesExemplo.length)],
+        idade: Math.floor(Math.random() * 100),
+        hobbies: hobbiesExemplo.slice(0, Math.floor(Math.random() * hobbiesExemplo.length) + 1),
+        endereco: enderecoExemplo[Math.floor(Math.random() * enderecoExemplo.length)]
+      };
+
+      obj2 = {
+        idade: Math.floor(Math.random() * 100),
+        email: `${nomesExemplo[Math.floor(Math.random() * nomesExemplo.length)].toLowerCase()}@example.com`,
+        hobbies: hobbiesExemplo.slice(0, Math.floor(Math.random() * hobbiesExemplo.length) + 1),
+        telefone: telefoneExemplo[Math.floor(Math.random() * telefoneExemplo.length)]
+      };
+
+      exibirResultado('outputObj1', obj1);
+      exibirResultado('outputObj2', obj2);
+    }
+
+    // Função para combinar objetos com prioridade para obj2
+    function combinarObjetos() {
+      const combinado = { ...obj1, ...obj2 };
+      exibirResultado('outputCombinado', combinado);
+    }
+
+    // Função para exibir objetos no elemento <pre>
+    function exibirResultado(elementId, resultado) {
+      document.getElementById(elementId).textContent = JSON.stringify(resultado, null, 2);
+    }
+  </script>
+</body>
+</html>

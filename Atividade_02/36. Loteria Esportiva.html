@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loteria Esportiva</title>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    /* Estilos para o contêiner principal */
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 1000px;
+      width: 100%;
+      overflow-x: auto;
+    }
+    /* Estilos para os cabeçalhos */
+    h1, h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    /* Estilos para o grupo de entrada */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .input-group input, .input-group textarea {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    /* Estilos para os botões */
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    /* Estilos para os botões ao serem "hovered" */
+    button:hover {
+      background-color: #0056b3;
+    }
+    /* Estilos para a seção de resultados */
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+    .result ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .result li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Loteria Esportiva</h1>
+    <div class="input-group">
+      <label for="inputGabarito">Digite o gabarito (13 números separados por vírgula):</label>
+      <input type="text" id="inputGabarito" placeholder="Ex: 1,2,3,4,5,6,7,8,9,10,11,12,13" />
+      <label for="inputApostadores">Digite as respostas dos apostadores (100 linhas, cada linha com 14 números separados por vírgula, o primeiro número é o número do cartão):</label>
+      <textarea id="inputApostadores" rows="10" placeholder="Ex: 1,1,2,3,4,5,6,7,8,9,10,11,12,13&#10;2,1,2,3,4,5,6,7,8,9,10,11,12,13&#10;..."></textarea>
+    </div>
+    <button id="preencherDados">Preencher Dados</button>
+    <button id="verificarGanhadores">Verificar Ganhadores</button>
+    <div class="result" id="resultados"></div>
+  </div>
+
+  <script>
+    // Função para preencher os campos com dados de exemplo
+    function preencherDados() {
+      const gabaritoExemplo = Array.from({ length: 13 }, () => Math.floor(Math.random() * 10 + 1)).join(',');
+      const apostadoresExemplo = Array.from({ length: 100 }, (_, i) => {
+        const respostas = Array.from({ length: 13 }, () => Math.floor(Math.random() * 10 + 1)).join(',');
+        return `${i + 1},${respostas}`;
+      }).join('\n');
+
+      document.getElementById('inputGabarito').value = gabaritoExemplo;
+      document.getElementById('inputApostadores').value = apostadoresExemplo;
+    }
+
+    // Função para verificar os ganhadores
+    function verificarGanhadores() {
+      const gabarito = document.getElementById('inputGabarito').value.split(',').map(Number);
+      const apostadoresInput = document.getElementById('inputApostadores').value.split('\n');
+      const resultados = [];
+
+      if (gabarito.length !== 13) {
+        alert('Por favor, insira exatamente 13 números no gabarito.');
+        return;
+      }
+
+      if (apostadoresInput.length !== 100) {
+        alert('Por favor, insira exatamente 100 linhas de respostas dos apostadores.');
+        return;
+      }
+
+      apostadoresInput.forEach(apostador => {
+        const respostas = apostador.split(',').map(Number);
+        const numeroCartao = respostas[0];
+        const respostasApostador = respostas.slice(1, 14);
+
+        if (respostasApostador.length !== 13) {
+          alert(`Por favor, insira exatamente 13 respostas para o apostador ${numeroCartao}.`);
+          return;
+        }
+
+        let acertos = 0;
+        for (let i = 0; i < 13; i++) {
+          if (respostasApostador[i] === gabarito[i]) {
+            acertos++;
+          }
+        }
+
+        let mensagem = `Apostador ${numeroCartao}: ${acertos} acertos.`;
+        if (acertos === 13) {
+          mensagem += " Parabéns, tu foi o GANHADOR!";
+        }
+        resultados.push(mensagem);
+      });
+
+      document.getElementById('resultados').innerHTML = `
+        <h2>Resultados</h2>
+        <ul>${resultados.map(item => `<li>${item}</li>`).join('')}</ul>
+      `;
+    }
+
+    // Adicionar eventos aos botões
+    document.getElementById('preencherDados').addEventListener('click', preencherDados);
+    document.getElementById('verificarGanhadores').addEventListener('click', verificarGanhadores);
+  </script>
+</body>
+</html>

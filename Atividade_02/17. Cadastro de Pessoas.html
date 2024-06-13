@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Pessoas</title>
+  <style>
+    /* Estilização do corpo da página */
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Altura total da janela de visualização */
+    }
+    /* Estilização do container */
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+    /* Estilização do título */
+    h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    /* Estilização do contêiner de entradas */
+    #inputsContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    /* Estilização de cada linha de entrada */
+    .input-group {
+      display: flex;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .input-group label {
+      width: 20%;
+      text-align: right;
+      padding-right: 10px;
+      line-height: 30px;
+    }
+    .input-group input {
+      width: 80%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    /* Estilização do botão */
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+    /* Estilização do botão ao passar o mouse */
+    button:hover {
+      background-color: #0056b3;
+    }
+    /* Estilização do resultado */
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+      text-align: left;
+    }
+    /* Estilização dos itens */
+    .person {
+      background-color: #f4f7f9;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cadastro de Pessoas</h1>
+    <div id="inputsContainer">
+      <!-- Campos de entrada serão adicionados aqui -->
+    </div>
+    <button id="preencherDados">Preencher Dados</button>
+    <button id="cadastrarPessoas">Cadastrar Pessoas</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const container = document.getElementById('inputsContainer');
+    for (let i = 0; i < 9; i++) {
+      const inputGroup = document.createElement('div');
+      inputGroup.className = 'input-group';
+
+      const labelNome = document.createElement('label');
+      labelNome.htmlFor = `nome${i}`;
+      labelNome.textContent = `Nome ${i + 1}:`;
+      inputGroup.appendChild(labelNome);
+
+      const nomeInput = document.createElement('input');
+      nomeInput.type = 'text';
+      nomeInput.id = `nome${i}`;
+      inputGroup.appendChild(nomeInput);
+
+      const labelIdade = document.createElement('label');
+      labelIdade.htmlFor = `idade${i}`;
+      labelIdade.textContent = `Idade ${i + 1}:`;
+      inputGroup.appendChild(labelIdade);
+
+      const idadeInput = document.createElement('input');
+      idadeInput.type = 'number';
+      idadeInput.id = `idade${i}`;
+      inputGroup.appendChild(idadeInput);
+
+      container.appendChild(inputGroup);
+    }
+
+    document.getElementById('preencherDados').addEventListener('click', function() {
+      const nomes = ["Alice", "Bruno", "Carla", "Diego", "Eva", "Felipe", "Gabi", "Hugo", "Isabela"];
+      const idades = [17, 18, 16, 20, 15, 22, 14, 21, 13];
+      
+      for (let i = 0; i < 9; i++) {
+        document.getElementById(`nome${i}`).value = nomes[i];
+        document.getElementById(`idade${i}`).value = idades[i];
+      }
+    });
+
+    document.getElementById('cadastrarPessoas').addEventListener('click', function() {
+      let nomes = [];
+      let idades = [];
+      
+      for (let i = 0; i < 9; i++) {
+        const nome = document.getElementById(`nome${i}`).value;
+        const idade = parseInt(document.getElementById(`idade${i}`).value);
+
+        if (nome.trim() !== '' && !isNaN(idade)) {
+          nomes.push(nome);
+          idades.push(idade);
+        } else {
+          alert('Por favor, preencha todos os campos corretamente.');
+          return;
+        }
+      }
+
+      let resultDiv = document.getElementById('result');
+      let menoresDeIdade = nomes.map((nome, index) => ({ nome, idade: idades[index] }))
+                                .filter(pessoa => pessoa.idade < 18);
+
+      if (menoresDeIdade.length > 0) {
+        resultDiv.innerHTML = "<h2>Pessoas Menores de Idade:</h2>" + menoresDeIdade.map(pessoa => `<div class='person'>Nome: ${pessoa.nome}, Idade: ${pessoa.idade}</div>`).join('');
+      } else {
+        resultDiv.textContent = "Não há pessoas menores de idade.";
+      }
+    });
+  </script>
+</body>
+</html>
